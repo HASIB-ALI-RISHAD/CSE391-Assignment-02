@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 1. Document Metadata & Character Encoding -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CSE 391 Assignment 02 - JavaScript Programming (Fortune Generator, Step-by-3 Stopwatch, and Persistent To-Do List) by Md. Hasib Ali Rishad (ID: 23101389)">
+    <meta name="author" content="Md. Hasib Ali Rishad">
+    <title>Hasib | CSE 391 Assignment 02 — JavaScript Programming</title>
+
+    <!-- 2. Brand Favicons -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/favicon-256.png">
+
+    <!-- 3. Google Fonts: Martian Mono (Headings/UI/Digits), Inter (Body), plus Lora & Space Grotesk for Fortune Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Lora:ital,wght@0,500;0,600;1,500&amp;family=Martian+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+
+    <!-- 4. External ZenCrypto Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 5. Pure CSS Dark/Light Mode State Checkbox + Immediate localStorage Sync -->
+    <input type="checkbox" id="theme-toggle" class="theme-toggle-input" aria-label="Toggle dark and light theme">
+    <script>
+        if (localStorage.getItem("site-theme") === "dark") {
+            document.getElementById("theme-toggle").checked = true;
+        }
+    </script>
+
+    <div class="theme-wrapper">
+        <div class="page-wrapper">
+
+            <!-- ==================================================================
+                 6. Site Header & Single-Row Navigation Bar
+                 ================================================================== -->
+            <header class="site-header">
+                <!-- Pure CSS Mobile Drawer State Checkbox -->
+                <input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-label="Toggle navigation menu">
+
+                <a href="index.html" class="brand-badge" title="Md. Hasib Ali Rishad — CSE 391 Assignment 02">
+                    <span class="brand-logo">HR</span>
+                    <span class="brand-name">Md. Hasib Ali Rishad &bull; CSE 391</span>
+                </a>
+
+                <!-- Quick In-Page Section Anchors (Serial Order: Q1 -> Q2 -> Q3) -->
+                <nav class="site-nav" aria-label="Primary Section Navigation">
+                    <a href="#fortune" class="nav-link active">Fortune Generator</a>
+                    <a href="#stopwatch" class="nav-link">Stopwatch</a>
+                    <a href="#todo" class="nav-link">To-Do List</a>
+                </nav>
+
+                <!-- Far-Right Controls: Lime Pill Theme Switch & Mobile Hamburger -->
+                <div class="header-actions">
+                    <label for="theme-toggle" class="theme-toggle-label" title="Toggle Dark and Light Mode">
+                        <span class="toggle-text-dark">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                            <span>Dark<span class="mode-word"> Mode</span></span>
+                        </span>
+                        <span class="toggle-text-light">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                            <span>Light<span class="mode-word"> Mode</span></span>
+                        </span>
+                    </label>
+
+                    <label for="nav-toggle" class="nav-hamburger" title="Toggle navigation menu">
+                        <span class="hamburger-bar"></span>
+                        <span class="hamburger-bar"></span>
+                        <span class="hamburger-bar"></span>
+                    </label>
+                </div>
+            </header>
+
+            <main>
+                <!-- ==================================================================
+                     7. Assignment Objective & Overview Banner
+                     ================================================================== -->
+                <section class="content-section intro-banner" aria-labelledby="assignment-title">
+                    <div class="intro-top-row">
+                        <span class="section-pill">Assignment 02 &bull; JavaScript Programming</span>
+                    </div>
+
+                    <h1 id="assignment-title" class="intro-title">Interactive JavaScript Web Applications</h1>
+                    <p class="intro-desc">
+                        Applying core JavaScript concepts: DOM manipulation, event listeners, arrays, timing functions,
+                        and localStorage data persistence across three interactive tasks: a Fortune Generator,
+                        a Step-by-3 Stopwatch, and a Persistent To-Do List.
+                    </p>
+                </section>
+
+                <!-- ==================================================================
+                     8. Section 1: Fortune Generator
+                     ================================================================== -->
+                <section id="fortune" class="content-section" aria-labelledby="fortune-heading">
+                    <div class="section-header-row">
+                        <h2 id="fortune-heading">Fortune Generator</h2>
+                    </div>
+
+                    <p class="section-lead">
+                        Randomly selects and displays one fortune each time the page is loaded. Click any of the <strong>four buttons</strong> beside the centered fortune box to dynamically change its font color, background color, border color, font size, and font family.
+                    </p>
+
+                    <!-- Centered Fortune Box + 4 Adjacent Customization Buttons -->
+                    <div class="fortune-stage">
+                        <div id="fortune-box" class="fortune-box">
+                            <p id="fortune-text" class="fortune-quote">
+                                Loading fortune...
+                            </p>
+                        </div>
+
+                        <!-- 4 Color Buttons Beside the Fortune Box -->
+                        <div class="fortune-controls" role="group" aria-label="Fortune box appearance buttons">
+                            <button
+                                type="button"
+                                class="fortune-swatch swatch-emerald"
+                                data-preset="emerald"
+                                aria-label="Apply green fortune theme"
+                                aria-pressed="false"
+                                title="Emerald Mint Theme"
+                            ></button>
+
+                            <button
+                                type="button"
+                                class="fortune-swatch swatch-amber"
+                                data-preset="amber"
+                                aria-label="Apply yellow fortune theme"
+                                aria-pressed="false"
+                                title="Solar Amber Theme"
+                            ></button>
+
+                            <button
+                                type="button"
+                                class="fortune-swatch swatch-cobalt"
+                                data-preset="cobalt"
+                                aria-label="Apply blue fortune theme"
+                                aria-pressed="false"
+                                title="Cobalt Sky Theme"
+                            ></button>
+
+                            <button
+                                type="button"
+                                class="fortune-swatch swatch-coral"
+                                data-preset="coral"
+                                aria-label="Apply orange fortune theme"
+                                aria-pressed="false"
+                                title="Sunset Coral Theme"
+                            ></button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================================================================
+                     9. Section 2: Step-by-3 Stopwatch
+                     ================================================================== -->
+                <section id="stopwatch" class="content-section" aria-labelledby="stopwatch-heading">
+                    <div class="section-header-row">
+                        <h2 id="stopwatch-heading">Stopwatch</h2>
+                        <div id="stopwatch-status-badge" class="status-pill state-idle">
+                            <span class="state-indicator"></span>
+                            <span id="stopwatch-status-text">Ready &bull; 0s</span>
+                        </div>
+                    </div>
+
+                    <p class="section-lead">
+                        Counts strictly in increments of <strong>3 seconds</strong> and automatically stops upon reaching <strong>30 seconds</strong> unless reset. Pausing preserves elapsed time so starting again resumes seamlessly.
+                    </p>
+
+                    <!-- Digital Counter Display & Controls Panel -->
+                    <div id="stopwatch-panel" class="stopwatch-panel">
+                        <div class="stopwatch-readout-wrap">
+                            <div class="stopwatch-counter-box">
+                                <span id="stopwatch-display" class="stopwatch-digits" aria-live="polite">0</span>
+                                <span class="stopwatch-unit">SEC</span>
+                            </div>
+                            <p id="stopwatch-helper" class="stopwatch-helper-text">
+                                Press <strong>Start</strong> to begin counting in 3 second intervals.
+                            </p>
+                        </div>
+
+                        <!-- 10-Step Visual Progress Checkpoints (3s to 30s) -->
+                        <div class="stopwatch-steps" aria-hidden="true">
+                            <span class="step-node" data-step="3">3s</span>
+                            <span class="step-node" data-step="6">6s</span>
+                            <span class="step-node" data-step="9">9s</span>
+                            <span class="step-node" data-step="12">12s</span>
+                            <span class="step-node" data-step="15">15s</span>
+                            <span class="step-node" data-step="18">18s</span>
+                            <span class="step-node" data-step="21">21s</span>
+                            <span class="step-node" data-step="24">24s</span>
+                            <span class="step-node" data-step="27">27s</span>
+                            <span class="step-node" data-step="30">30s</span>
+                        </div>
+
+                        <!-- Primary Timer Action Controls -->
+                        <div class="stopwatch-controls">
+                            <button type="button" id="stopwatch-start-btn" class="btn-zen btn-start">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                                </svg>
+                                <span>Start</span>
+                            </button>
+
+                            <button type="button" id="stopwatch-stop-btn" class="btn-zen btn-stop" disabled>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                    <rect x="6" y="5" width="4" height="14" rx="1"></rect>
+                                    <rect x="14" y="5" width="4" height="14" rx="1"></rect>
+                                </svg>
+                                <span>Stop</span>
+                            </button>
+
+                            <button type="button" id="stopwatch-reset-btn" class="btn-zen btn-reset">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path>
+                                    <polyline points="3 3 3 8 8 8"></polyline>
+                                </svg>
+                                <span>Reset</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==================================================================
+                     10. Section 3: Persistent To-Do List
+                     ================================================================== -->
+                <section id="todo" class="content-section last-section" aria-labelledby="todo-heading">
+                    <div class="section-header-row">
+                        <h2 id="todo-heading">To-Do List</h2>
+                        <div class="todo-stats" aria-live="polite">
+                            <span class="stat-badge">Total: <strong id="todo-count-total">0</strong></span>
+                            <span class="stat-badge">Pending: <strong id="todo-count-pending">0</strong></span>
+                            <span class="stat-badge stat-badge-accent">Done: <strong id="todo-count-done">0</strong></span>
+                        </div>
+                    </div>
+
+                    <p class="section-lead">
+                        Add tasks via button click or <kbd>Enter</kbd>, mark items complete with custom checkboxes, or remove tasks at any time.
+                    </p>
+
+                    <!-- Task Creation Form -->
+                    <form id="todo-form" class="todo-form" novalidate>
+                        <label for="todo-input" class="sr-only">Task description</label>
+                        <input
+                            type="text"
+                            id="todo-input"
+                            class="form-control todo-input"
+                            placeholder="Type a new task and press Enter (e.g., Review CSE 391 lecture notes)..."
+                            maxlength="180"
+                            autocomplete="off"
+                        >
+                        <button type="submit" id="todo-add-btn" class="btn-zen btn-add">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span>Add Task</span>
+                        </button>
+                    </form>
+
+                    <!-- Inline Validation Alert -->
+                    <p id="todo-error" class="todo-error" role="alert" hidden></p>
+
+                    <!-- Filter Tabs -->
+                    <div class="todo-toolbar">
+                        <div class="todo-filters" role="group" aria-label="Filter tasks by completion status">
+                            <button type="button" class="filter-chip active" data-filter="all">All</button>
+                            <button type="button" class="filter-chip" data-filter="pending">Pending</button>
+                            <button type="button" class="filter-chip" data-filter="completed">Completed</button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Task List -->
+                    <ul id="todo-list" class="todo-list" aria-label="Saved tasks"></ul>
+
+                    <!-- Empty List Fallback -->
+                    <div id="todo-empty" class="todo-empty">
+                        <p class="todo-empty-title">List is currently empty.</p>
+                        
+                    </div>
+                </section>
+            </main>
+
+            <!-- ==================================================================
+                 11. Site Footer
+                 ================================================================== -->
+            <footer class="site-footer">
+                <p class="footer-credits">
+                    &copy; 2026 Md. Hasib Ali Rishad | Student ID: 23101389 &bull; Department of CSE, BRAC University.
+                </p>
+                <p class="footer-subcredits">
+                    Built for <strong>CSE 391: Programming for the Internet</strong> (Assignment 02: JavaScript Programming).
+                </p>
+            </footer>
+
+        </div><!-- /.page-wrapper -->
+    </div><!-- /.theme-wrapper -->
+
+    <!-- ==================================================================
+         12. External Vanilla JavaScript Application Bundle
+         ================================================================== -->
+    <script src="script.js"></script>
+</body>
+</html>

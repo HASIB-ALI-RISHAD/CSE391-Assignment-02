@@ -1,0 +1,1248 @@
+/* ==========================================================================
+   CSE 391: Assignment 02 — Interactive JavaScript Suite Stylesheet
+   Author: Md. Hasib Ali Rishad (Student ID: 23101389), BRAC University
+   Theme: ZenCrypto Minimalist Palette (Sage Light Mode / Neon-Lime Dark Mode)
+   Tech Stack: 100% Vanilla CSS3 (Custom Properties, Grid, Flexbox, Keyframes)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties — Light Mode (Default)
+   -------------------------------------------------------------------------- */
+:root {
+    --bg-page: #e8ede4;
+    --card-bg: #ffffff;
+    --card-subtle: #f4f6f0;
+    --card-hover: #f9fbf6;
+    --text-primary: #191314;
+    --text-muted: #525252;
+    --accent-lime: #ecf95a;
+    --link-color: #191314;
+    --link-hover: #4a5d00;
+    --border-color: #191314;
+    --border-subtle: #d5dcd0;
+    --btn-bg: #191314;
+    --btn-text: #ffffff;
+    --danger-bg: #fef2f2;
+    --danger-border: #dc2626;
+    --danger-text: #b91c1c;
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-pill: 9999px;
+    --font-heading: 'Martian Mono', monospace, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.05);
+    --transition: all 0.24s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. CSS Custom Properties — Pure CSS Dark Mode Toggle
+   Activated via #theme-toggle:checked ~ .theme-wrapper
+   -------------------------------------------------------------------------- */
+#theme-toggle:checked ~ .theme-wrapper {
+    --bg-page: #0f110c;
+    --card-bg: #181b14;
+    --card-subtle: #22271c;
+    --card-hover: #2a3023;
+    --text-primary: #f4f6f0;
+    --text-muted: #b8c2ad;
+    --accent-lime: #ecf95a;
+    --link-color: #ecf95a;
+    --link-hover: #ffffff;
+    --border-color: #ecf95a;
+    --border-subtle: #363e2d;
+    --btn-bg: #ecf95a;
+    --btn-text: #191314;
+    --danger-bg: #311517;
+    --danger-border: #f87171;
+    --danger-text: #fca5a5;
+    --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.36);
+}
+
+/* --------------------------------------------------------------------------
+   3. Keyframe Animations (Entrance Motion & Active Stopwatch Pulse)
+   -------------------------------------------------------------------------- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseDot {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(56, 176, 0, 0.65);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 8px rgba(56, 176, 0, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(56, 176, 0, 0);
+    }
+}
+
+@keyframes counterPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(236, 249, 90, 0.55);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 0 10px rgba(236, 249, 90, 0);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   4. Base Reset, Accessibility Helpers & Typography
+   -------------------------------------------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+}
+
+/* Visually hidden helper for screen-reader labels */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.theme-wrapper {
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    padding: 24px 16px 36px 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.page-wrapper {
+    max-width: 1060px;
+    margin: 0 auto;
+    color: var(--text-primary);
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    line-height: 1.25;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+p {
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+strong {
+    color: var(--text-primary);
+}
+
+code, kbd {
+    font-family: var(--font-heading);
+    font-size: 0.82em;
+    background-color: var(--card-subtle);
+    border: 1px solid var(--border-subtle);
+    padding: 2px 6px;
+    border-radius: 5px;
+    color: var(--text-primary);
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: underline;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+/* --------------------------------------------------------------------------
+   5. Pure-CSS Dark / Light Mode Toggle Switch
+   -------------------------------------------------------------------------- */
+.theme-toggle-input,
+.nav-toggle-input {
+    display: none;
+}
+
+.theme-toggle-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-lime);
+    color: #191314;
+    border: 1.5px solid #191314;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-heading);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition);
+}
+
+.theme-toggle-label:hover {
+    background-color: #191314;
+    border-color: #191314;
+    color: var(--accent-lime);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+}
+
+#theme-toggle:checked ~ .theme-wrapper .theme-toggle-label {
+    background-color: var(--accent-lime);
+    color: #191314;
+    border-color: var(--accent-lime);
+}
+
+#theme-toggle:checked ~ .theme-wrapper .theme-toggle-label:hover {
+    background-color: #f6ff85;
+    border-color: #ffffff;
+    color: #191314;
+    box-shadow: 0 4px 14px rgba(236, 249, 90, 0.28);
+}
+
+.toggle-text-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.toggle-text-light {
+    display: none;
+    align-items: center;
+    gap: 6px;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .toggle-text-dark {
+    display: none;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .toggle-text-light {
+    display: inline-flex;
+}
+
+/* --------------------------------------------------------------------------
+   6. Site Header & Single-Row Navigation Bar
+   -------------------------------------------------------------------------- */
+.site-header {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-card);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.brand-badge:hover {
+    opacity: 0.88;
+}
+
+.brand-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background-color: var(--accent-lime);
+    color: #191314;
+    border: 2px solid #191314;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.brand-name {
+    font-family: var(--font-heading);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.site-nav {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 18px;
+}
+
+.nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-heading);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--text-muted);
+    padding: 6px 2px;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--text-primary);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.22s ease, background-color 0.22s ease;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .nav-link::after {
+    background-color: var(--accent-lime);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--text-primary);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+.header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+    background-color: var(--card-subtle);
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition);
+}
+
+.nav-hamburger:hover {
+    background-color: var(--accent-lime);
+    border-color: #191314;
+}
+
+.nav-hamburger:hover .hamburger-bar {
+    background-color: #191314;
+}
+
+.hamburger-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--text-primary);
+    transition: transform 0.25s ease, opacity 0.2s ease, background-color 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   7. Content Cards, Section Pills & Shared ZenCrypto Buttons
+   -------------------------------------------------------------------------- */
+.content-section {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 30px 32px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-card);
+    animation: fadeInUp 0.5s ease-out both;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.last-section {
+    margin-bottom: 0;
+}
+
+.section-pill {
+    display: inline-block;
+    background-color: var(--card-subtle);
+    border: 1px solid var(--border-color);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.section-lead {
+    font-size: 0.95rem;
+    margin-bottom: 22px;
+    max-width: 820px;
+}
+
+/* Shared ZenCrypto Interactive Buttons */
+.btn-zen {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-size: 0.84rem;
+    font-weight: 700;
+    padding: 11px 22px;
+    border-radius: var(--radius-pill);
+    border: 2px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.btn-zen:hover:not(:disabled) {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.btn-zen:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-zen:focus-visible,
+.fortune-swatch:focus-visible,
+.filter-chip:focus-visible,
+.btn-delete-task:focus-visible {
+    outline: 3px solid var(--accent-lime);
+    outline-offset: 2px;
+}
+
+.btn-zen:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-start,
+.btn-add {
+    background-color: var(--accent-lime);
+    color: #191314;
+    border-color: var(--border-color);
+}
+
+/* --------------------------------------------------------------------------
+   8. Assignment Objective & Overview Banner
+   -------------------------------------------------------------------------- */
+.intro-banner {
+    padding: 26px 32px;
+}
+
+.intro-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.intro-top-row .section-pill {
+    margin-bottom: 0;
+}
+
+.intro-title {
+    font-size: 1.85rem;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.intro-desc {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+    max-width: 840px;
+}
+
+/* --------------------------------------------------------------------------
+   9. Section 1: Fortune Generator Styles
+   -------------------------------------------------------------------------- */
+.fortune-stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    max-width: 820px;
+    margin: 4px auto 0 auto;
+}
+
+.fortune-box {
+    flex: 1;
+    max-width: 650px;
+    min-height: 104px;
+    padding: 24px 28px;
+    background-color: #dbeafe;
+    color: #1e3a8a;
+    border: 3px solid #2563eb;
+    border-radius: var(--radius-md);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    transition: background-color 0.28s ease, border-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+}
+
+.fortune-quote {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.06rem;
+    font-weight: 600;
+    line-height: 1.55;
+    color: inherit;
+    transition: font-size 0.22s ease, color 0.25s ease;
+}
+
+/* 4 Color Customization Buttons Beside the Fortune Box (2x2 Grid) */
+.fortune-controls {
+    display: grid;
+    grid-template-columns: repeat(2, 42px);
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.fortune-swatch {
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.fortune-swatch:hover {
+    transform: translateY(-2px) scale(1.06);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+}
+
+.swatch-emerald {
+    background-color: #5ca83b;
+}
+
+.swatch-amber {
+    background-color: #f6be00;
+}
+
+.swatch-cobalt {
+    background-color: #4f94d4;
+}
+
+.swatch-coral {
+    background-color: #ea7527;
+}
+
+.fortune-swatch.active {
+    box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--border-color);
+}
+
+/* --------------------------------------------------------------------------
+   10. Section 2: Stopwatch Styles
+   -------------------------------------------------------------------------- */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--border-color);
+    background-color: var(--card-subtle);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.state-indicator {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--text-muted);
+    display: inline-block;
+    transition: var(--transition);
+}
+
+.status-pill.state-running .state-indicator {
+    background-color: #38b000;
+    animation: pulseDot 1.4s infinite;
+}
+
+.status-pill.state-paused .state-indicator {
+    background-color: #eab308;
+}
+
+.status-pill.state-completed {
+    background-color: var(--accent-lime);
+    color: #191314;
+    border-color: #191314;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .status-pill.state-completed {
+    border-color: var(--accent-lime);
+}
+
+.status-pill.state-completed .state-indicator {
+    background-color: #191314;
+}
+
+.stopwatch-panel {
+    background-color: var(--card-subtle);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 28px 24px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.stopwatch-readout-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.stopwatch-counter-box {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    min-width: 240px;
+    padding: 20px 36px;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    transition: var(--transition);
+}
+
+/* Active pulse animation while stopwatch interval is running */
+.stopwatch-panel.is-running .stopwatch-counter-box {
+    border-color: #38b000;
+    animation: counterPulse 1.5s ease-in-out infinite;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .stopwatch-panel.is-running .stopwatch-counter-box {
+    border-color: var(--accent-lime);
+}
+
+.stopwatch-panel.is-completed .stopwatch-counter-box {
+    background-color: var(--accent-lime);
+    color: #191314;
+    border-color: #191314;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .stopwatch-panel.is-completed .stopwatch-counter-box {
+    border-color: var(--accent-lime);
+}
+
+.stopwatch-digits {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    color: inherit;
+}
+
+.stopwatch-unit {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    opacity: 0.78;
+    color: inherit;
+}
+
+.stopwatch-helper-text {
+    font-size: 0.88rem;
+    margin: 0;
+    color: var(--text-muted);
+}
+
+/* 10-Step Progress Track (3s, 6s, ..., 30s) */
+.stopwatch-steps {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    max-width: 680px;
+    margin: 0 auto 24px auto;
+}
+
+.step-node {
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 6px 4px;
+    border-radius: var(--radius-sm);
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    transition: var(--transition);
+}
+
+.step-node.reached {
+    background-color: var(--accent-lime);
+    color: #191314;
+    border-color: #191314;
+    font-weight: 700;
+    transform: translateY(-1px);
+}
+
+#theme-toggle:checked ~ .theme-wrapper .step-node.reached {
+    border-color: var(--accent-lime);
+}
+
+.stopwatch-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/* --------------------------------------------------------------------------
+   11. Section 3: To-Do List Styles
+   -------------------------------------------------------------------------- */
+.todo-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.stat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-heading);
+    font-size: 0.74rem;
+    padding: 5px 11px;
+    border-radius: var(--radius-pill);
+    background-color: var(--card-subtle);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+}
+
+.stat-badge-accent {
+    background-color: var(--accent-lime);
+    border-color: #191314;
+    color: #191314;
+}
+
+.stat-badge-accent strong {
+    color: #191314;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .stat-badge-accent {
+    border-color: var(--accent-lime);
+}
+
+.todo-form {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-control {
+    flex: 1;
+    background-color: var(--card-subtle);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    padding: 12px 18px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: var(--transition);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+    opacity: 0.78;
+}
+
+.form-control:focus {
+    outline: none;
+    background-color: var(--card-bg);
+    box-shadow: 0 0 0 4px rgba(236, 249, 90, 0.45);
+}
+
+.form-control.input-invalid {
+    border-color: var(--danger-border);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+
+.todo-error {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    color: var(--danger-text);
+    background-color: var(--danger-bg);
+    border: 1px solid var(--danger-border);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    margin-bottom: 14px;
+}
+
+.todo-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 14px 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.todo-filters {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.filter-chip {
+    font-family: var(--font-heading);
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--border-subtle);
+    background-color: var(--card-subtle);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.filter-chip:hover {
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.filter-chip.active {
+    background-color: var(--accent-lime);
+    color: #191314;
+    border-color: #191314;
+    font-weight: 700;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .filter-chip.active {
+    border-color: var(--accent-lime);
+}
+
+.todo-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    background-color: var(--card-subtle);
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    transition: var(--transition);
+}
+
+.todo-item:hover {
+    background-color: var(--card-hover);
+    transform: translateX(2px);
+}
+
+.todo-item.is-completed {
+    border-color: var(--border-subtle);
+    opacity: 0.85;
+}
+
+/* Custom Accessible Checkbox */
+.todo-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.todo-checkbox-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.todo-checkbox-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: transparent;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: var(--transition);
+}
+
+.todo-checkbox-input:focus-visible + .todo-checkbox-custom {
+    outline: 3px solid var(--accent-lime);
+    outline-offset: 2px;
+}
+
+.todo-checkbox-input:checked + .todo-checkbox-custom {
+    background-color: var(--accent-lime);
+    border-color: #191314;
+    color: #191314;
+}
+
+#theme-toggle:checked ~ .theme-wrapper .todo-checkbox-input:checked + .todo-checkbox-custom {
+    border-color: var(--accent-lime);
+}
+
+.todo-text {
+    font-size: 0.96rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    word-break: break-word;
+    transition: color 0.2s ease;
+}
+
+.todo-item.is-completed .todo-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.btn-delete-task {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--border-subtle);
+    background-color: var(--card-bg);
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-delete-task:hover {
+    background-color: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+}
+
+.todo-empty {
+    text-align: center;
+    padding: 24px 20px;
+    background-color: var(--card-subtle);
+    border: 1.5px dashed var(--border-subtle);
+    border-radius: 12px;
+}
+
+.todo-empty-title {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   12. Site Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 22px 32px;
+    margin-top: 24px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-credits {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.footer-subcredits {
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------------------
+   13. Responsive Media Queries (980px, 768px, 520px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 980px) {
+    .site-header {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 12px 18px;
+        gap: 10px;
+    }
+
+    .brand-badge {
+        order: 1;
+    }
+
+    .header-actions {
+        order: 2;
+        margin-left: auto;
+    }
+
+    .nav-hamburger {
+        display: inline-flex;
+    }
+
+    #nav-toggle:checked ~ .header-actions .nav-hamburger .hamburger-bar:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+    }
+
+    #nav-toggle:checked ~ .header-actions .nav-hamburger .hamburger-bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    #nav-toggle:checked ~ .header-actions .nav-hamburger .hamburger-bar:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .site-nav {
+        order: 3;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        margin-left: 0;
+        gap: 4px;
+        padding-top: 12px;
+        margin-top: 4px;
+        border-top: 1px solid var(--border-subtle);
+    }
+
+    #nav-toggle:checked ~ .site-nav {
+        display: flex;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .nav-link:hover {
+        background-color: var(--card-subtle);
+    }
+
+    .nav-link.active,
+    .nav-link.active:hover {
+        background-color: var(--accent-lime);
+        color: #191314;
+        border: 1px solid #191314;
+    }
+
+    #theme-toggle:checked ~ .theme-wrapper .nav-link.active,
+    #theme-toggle:checked ~ .theme-wrapper .nav-link.active:hover {
+        border-color: var(--accent-lime);
+    }
+}
+
+@media (max-width: 768px) {
+    .theme-wrapper {
+        padding: 16px 12px 28px 12px;
+    }
+
+    .content-section,
+    .intro-banner,
+    .site-footer {
+        padding: 22px 20px;
+    }
+
+    .intro-title {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.22rem;
+    }
+
+    .fortune-stage {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .fortune-box {
+        width: 100%;
+    }
+
+    .fortune-controls {
+        grid-template-columns: repeat(4, 42px);
+    }
+
+    .stopwatch-steps {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .stopwatch-digits {
+        font-size: 3.3rem;
+    }
+
+    .todo-form {
+        flex-direction: column;
+    }
+
+    .btn-add {
+        width: 100%;
+    }
+}
+
+@media (max-width: 520px) {
+    .site-header {
+        padding: 10px 14px;
+    }
+
+    .brand-name {
+        font-size: 0.74rem;
+    }
+
+    .mode-word {
+        display: none;
+    }
+
+    .content-section,
+    .intro-banner,
+    .site-footer {
+        padding: 18px 15px;
+    }
+
+    .stopwatch-counter-box {
+        min-width: 190px;
+        padding: 16px 24px;
+    }
+
+    .stopwatch-digits {
+        font-size: 2.8rem;
+    }
+
+    .stopwatch-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .stopwatch-controls .btn-zen {
+        width: 100%;
+    }
+
+    .todo-item {
+        flex-wrap: wrap;
+    }
+
+    .btn-delete-task {
+        margin-left: auto;
+    }
+}
