@@ -1,0 +1,65 @@
+============================================================
+           AI USAGE DECLARATION
+============================================================
+
+Name: Md. Hasib Ali Rishad
+Student ID: 23101389
+Assignment: CSE 391 Assignment 02 - JavaScript Programming
+Date: November 2, 2026
+
+------------------------------------------------------------
+1. AI TOOLS USED (check all that apply)
+------------------------------------------------------------
+[ ] None
+[ ] ChatGPT
+[ ] GitHub Copilot
+[X] Google Gemini
+[ ] Claude
+[ ] Cursor
+[ ] Other: ________________
+
+------------------------------------------------------------
+2. PURPOSE OF AI USE (check all that apply)
+------------------------------------------------------------
+[X] Learning/understanding concepts
+[X] Debugging my code
+[X] Generating code snippets
+[X] Writing text content
+[X] Design/styling ideas
+[ ] Image generation
+[ ] Other: ________________
+
+------------------------------------------------------------
+3. DESCRIPTION OF AI USE
+------------------------------------------------------------
+Briefly describe what you used AI for and how:
+Used Google Gemini (Antigravity Assistant) as an interactive pair-programming
+assistant to structure semantic HTML5 markup (index.html), style the interface
+in a cohesive ZenCrypto-inspired vanilla CSS3 theme with dark/light mode and
+responsive breakpoints (style.css), implement and refine the three core
+JavaScript applications in script.js (Fortune Generator with dynamic style
+controls, Step-by-3 Stopwatch up to 30 seconds, and Persistent To-Do List using
+localStorage), refactor the JavaScript into clean foundational code aligned
+with course lectures, and validate all HTML5 and CSS3 files with zero errors.
+A complete chronological record of prompts is documented in docs/AI_Prompts.md.
+
+------------------------------------------------------------
+4. AI-ASSISTED SECTIONS
+------------------------------------------------------------
+List specific files/sections where AI helped significantly:
+
+File: index.html       Section: Sections 1-12 (Navbar, Overview Banner, Fortune Generator, Stopwatch, To-Do List, Footer)
+File: style.css        Section: Sections 1-13 (Theme Variables, Dark Mode, Animations, Interactive Widgets, Media Queries)
+File: script.js        Section: Sections 1-4 (Theme & Nav Sync, Fortune Generator, Step-by-3 Stopwatch, Persistent To-Do List)
+
+------------------------------------------------------------
+5. DECLARATION
+------------------------------------------------------------
+I declare that:
+- This disclosure is complete and accurate
+- I understand all code in my submission
+- I can explain and modify my work if asked
+- I take full responsibility for my submission
+
+Signature: Md. Hasib Ali Rishad
+Date: November 2, 2026
