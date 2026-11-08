@@ -217,7 +217,7 @@ function updateStopwatchUI(state) {
         stopwatchPanel.classList.add("is-running");
         statusBadge.classList.add("state-running");
         statusText.textContent = "Running • " + elapsedSeconds + "s / 30s";
-        stopwatchHelper.textContent = "Timer active: advancing by +3 seconds every 3 seconds.";
+        stopwatchHelper.textContent = "Timer active: advancing by +3 seconds every 1 seconds.";
         startBtn.disabled = true;
         stopBtn.disabled = false;
     } else if (state === "paused") {
@@ -271,7 +271,7 @@ function startStopwatch() {
     }
 
     updateStopwatchUI("running");
-    timerId = setInterval(tickStopwatch, 3000);
+    timerId = setInterval(tickStopwatch, 1000);
 }
 
 // Stop button handler (pauses timer and keeps current elapsedSeconds)
